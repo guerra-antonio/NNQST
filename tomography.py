@@ -199,16 +199,6 @@ def standard_tomography(
     objective = cp.Minimize(cp.sum(squared_errors))
     prob = cp.Problem(objective, constraints)
 
-    data_dict = prob.get_problem_data(cp.SCS)
-    data = data_dict[0]   # aquí sí tienes el diccionario con "A", "P", etc.
-
-    A = data["A"]
-    P = data["P"]
-
-    print("A:", type(A), getattr(A, "getformat", lambda: "dense")())
-    print("P:", type(P), getattr(P, "getformat", lambda: "dense")())
-
-
     default_kwargs = dict(
     eps=1e-6,
     max_iters=10_000,

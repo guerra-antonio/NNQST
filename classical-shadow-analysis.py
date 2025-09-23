@@ -112,7 +112,6 @@ for n_exp in tqdm(N_exp_test, desc = "Generating data for comparisson"):
         # -------------------------------
         # Made a set of 4 tomographies using Classical Shadow with error = 0.01, 0.05, 0.1 and 0.2
         # -------------------------------
-        print("Training models NNQST")
         CSpsi_pred_0   = CS_tomography(psi_true = psi_true, error = 0.0, n_exp = n_exp)
         CSpsi_pred_001 = CS_tomography(psi_true = psi_true, error = 0.01, n_exp = n_exp)
         CSpsi_pred_005 = CS_tomography(psi_true = psi_true, error = 0.05, n_exp = n_exp)
@@ -120,7 +119,6 @@ for n_exp in tqdm(N_exp_test, desc = "Generating data for comparisson"):
         CSpsi_pred_02  = CS_tomography(psi_true = psi_true, error = 0.2, n_exp = n_exp)
 
         # Compute the fidelities for each prediction
-        print("Computing fidelities from models NNQST")
         CSfidelity_0   = fidelity_model(model = CSpsi_pred_0, psi_true = psi_true)
         CSfidelity_001 = fidelity_model(model = CSpsi_pred_001, psi_true = psi_true)
         CSfidelity_005 = fidelity_model(model = CSpsi_pred_005, psi_true = psi_true)
@@ -131,12 +129,10 @@ for n_exp in tqdm(N_exp_test, desc = "Generating data for comparisson"):
         # Then, we do two tomographies more using standard tomograhy, one using Pauli basis and the other using Gellmann matrices
         # -------------------------------
         # Prepare the proper density matrices related with the psi_true vector
-        print("Preparing ST")
         rho_true = psi_true.detach().numpy()
         rho_true = np.kron(rho_true.conj().T, rho_true).reshape(2, 2)
 
         # Simulate the different expectations with different errors.
-        print("Simulate exp values")
         pauli_expectation_0   = np.array([simulate_expectation(rho = rho_true, O = pauli_obs, n_exp = int(n_exp / 3), error = 0.0) for pauli_obs in p_basis])
         pauli_expectation_001 = np.array([simulate_expectation(rho = rho_true, O = pauli_obs, n_exp = int(n_exp / 3), error = 0.01) for pauli_obs in p_basis])
         pauli_expectation_005 = np.array([simulate_expectation(rho = rho_true, O = pauli_obs, n_exp = int(n_exp / 3), error = 0.05) for pauli_obs in p_basis])
@@ -144,7 +140,6 @@ for n_exp in tqdm(N_exp_test, desc = "Generating data for comparisson"):
         pauli_expectation_02  = np.array([simulate_expectation(rho = rho_true, O = pauli_obs, n_exp = int(n_exp / 3), error = 0.2) for pauli_obs in p_basis])
 
         # Then we do the standard tomography
-        print("Predict the state using ST")
         rho_standard_0   = standard_tomography(set_measure_basis = p_basis, expectation_values = pauli_expectation_0)
         rho_standard_001 = standard_tomography(set_measure_basis = p_basis, expectation_values = pauli_expectation_001)
         rho_standard_005 = standard_tomography(set_measure_basis = p_basis, expectation_values = pauli_expectation_005)
@@ -152,7 +147,6 @@ for n_exp in tqdm(N_exp_test, desc = "Generating data for comparisson"):
         rho_standard_02  = standard_tomography(set_measure_basis = p_basis, expectation_values = pauli_expectation_02)
 
         # Compute the fidelities
-        print("Compute the fidelities using the state predicted with ST")
         fidelity_p_0    = fidelity(rho = rho_true, sigma = rho_standard_0, lib = "numpy")
         fidelity_p_001  = fidelity(rho = rho_true, sigma = rho_standard_001, lib = "numpy")
         fidelity_p_005  = fidelity(rho = rho_true, sigma = rho_standard_005, lib = "numpy")
@@ -161,7 +155,6 @@ for n_exp in tqdm(N_exp_test, desc = "Generating data for comparisson"):
 
         # Save the results in the list
         # For CS
-        print("Saving data")
         fidelities[0].append(CSfidelity_0)
         fidelities[1].append(CSfidelity_001)
         fidelities[2].append(CSfidelity_005)
