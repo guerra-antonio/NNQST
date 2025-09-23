@@ -97,7 +97,7 @@ def fidelity_model(model, psi_true):
 
 # Prepare the dataframe of Pandas to save the datagenerated
 
-N_exp_test  = [25 * _ for _ in range(12, 16)]
+N_exp_test  = [25 * _ for _ in range(1, 20)]
 p_basis     = pauli_basis(N = 1)
 
 for n_exp in tqdm(N_exp_test, desc = "Generating data for comparisson"):

@@ -199,8 +199,16 @@ def standard_tomography(
     objective = cp.Minimize(cp.sum(squared_errors))
     prob = cp.Problem(objective, constraints)
 
+    default_kwargs = dict(
+    eps=1e-6,
+    max_iters=10_000,
+    acceleration_lookback=20,
+    use_indirect=False,     # ← prueba True y False y qué gana en ese PC
+    warm_start=True)
+    default_kwargs.update(solve_kwargs)
+
     try:
-        prob.solve(solver=getattr(cp, solver), verbose=verbose, **solve_kwargs)
+        prob.solve(solver=cp.SCS, verbose=verbose, **default_kwargs)
     except Exception:
         # Any solver/runtime error -> no solution
         return None
