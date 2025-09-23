@@ -1,0 +1,5 @@
+cvxpy==1.6.0
+numpy==1.24.4
+numpydoc @ file:///private/var/folders/k1/30mswbxs7r1g6zwn8y4fyt500000gp/T/abs_69xghc3i3n/croot/numpydoc_1718279166747/work
+scipy==1.13.1
+scs==3.2.7
